@@ -1,31 +1,31 @@
 common:
   billing_account: &billing_account "01CA00-A50074-212B1C" # cloudon
   domain: &domain "cloudon.one"
-  org_id: "126764798915"
-  root_folder: "369651877816"
-  suffix: "stt"
+  org_id: "1234567890"
+  root_folder: "1234567890"
+  suffix: "tf-state"
   labels:
-    owner: cloudon-app
+    owner: cloudon-one
 
-Environments:
+envs:
   global:
-    Region: us-east1
-    Resources:
+    region: us-east1
+    resources:
       admin:
         inputs:
           billing_account: *billing_account
           domain: *domain
           folders:
             level1:
-              - "mgmt"
+              - "shrd"
               - "prod"
               - "dev"
               - "stg"
             level2:
               - name: "prod"
-                parent: "mgmt"
+                parent: "shrd"
               - name: "dev"
-                parent: "mgmt"
+                parent: "shrd"
               - name: "eu"
                 parent: "dev"
               - name: "eu"
@@ -42,7 +42,7 @@ Environments:
 
           net-dns:
             inputs:
-              project_id: "cloudon-app-admin-stt"
+              project_id: ""
               name: "cloudon.one"
               type: "public"
               domain: cloudon.one.
@@ -89,18 +89,17 @@ Environments:
             - "tf-svpc-prod-eu"
             - "tf-svc-prod-us"
             - "tf-svc-prod-eu"
-            - "tf-mgmt-dev"
-            - "tf-mgmt-prod-us"
-            - "tf-mgmt-prod-eu"
+            - "tf-shrd-dev"
+            - "tf-shrd-prod-us"
+            - "tf-shrd-prod-eu"
 
           environment_state_buckets:
             admin: "us-east1"
             audit: "us-east1"
-            mgmt-prod: "us-east1"
-            mgmt-dev: "europe-west1"
+            shrd-prod: "us-east1"
+            shrd-dev: "europe-west1"
             dev-eu: "europe-west1"
             stg-eu: "europe-west1"
-            stg-us: "us-east1"
             prod-eu: "europe-west1"
             prod-us: "us-east1"
 
@@ -131,13 +130,11 @@ Environments:
                 - "group:gcp-network-admins@cloudon.one"
               "roles/bigquery.dataViewer":
                 - "group:gcp-network-admins@cloudon.one"
-              "roles/compute.networkAdmin":
-                - "group:gcp-network-admins@cloudon.one"
               "roles/container.clusterViewer":
                 - "group:gcp-network-admins@cloudon.one"
-              "roles/iam.organizationRoleViewer":
+              "roles/iam.organizationroleViewer":
                 - "group:gcp-network-admins@cloudon.one"
-              "roles/iam.securityReviewer":
+              "roles/iam.securityreviewer":
                 - "group:gcp-network-admins@cloudon.one"
               "roles/logging.configWriter":
                 - "group:gcp-network-admins@cloudon.one"
@@ -157,8 +154,6 @@ Environments:
                 - "group:gcp-org-admins@cloudon.one"
               "roles/AccessTransparencyAdmin":
                 - "group:gcp-org-admins@cloudon.one"
-              "roles/compute.orgSecurityPolicyAdmin":
-                - "group:gcp-org-admins@cloudon.one"
               "roles/compute.storageAdmin":
                 - "group:gcp-org-admins@cloudon.one"
               "roles/compute.xpnAdmin":
@@ -171,16 +166,16 @@ Environments:
           billing_account: *billing_account
           domain: *domain
 
-  mgmt:
+  shrd:
     dev:
-      Region: &mgmt-dev-region "europe-west1"
-      Resources:
+      region: &shrd-dev-region "europe-west1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
             domain: *domain
-            host_project_name: "cloudon-mgmt-dev-host"
-            network_name: "cloudon-mgmt-dev-vpc"
+            host_project_name: ""
+            network_name: "cloudon-shrd-dev-vpc"
             active_apis:
               - "compute.googleapis.com"
               - "logging.googleapis.com"
@@ -193,13 +188,13 @@ Environments:
             subnets:
               - subnet_name: "gke-subnet"
                 subnet_ip: "10.151.128.0/20"
-                subnet_region: *mgmt-dev-region
+                subnet_region: *shrd-dev-region
                 subnet_private_access: true
                 subnet_flow_logs: true
 
               - subnet_name: "general-subnet"
                 subnet_ip: "10.151.161.0/24"
-                subnet_region: *mgmt-dev-region
+                subnet_region: *shrd-dev-region
                 subnet_private_access: true
                 subnet_flow_logs: true
 
@@ -212,7 +207,7 @@ Environments:
 
             cloud_nats:
               europe-west1:
-                router_name: "cloudon-mgmt-dev-router"
+                router_name: "cloudon-shrd-dev-router"
                 router_asn: "64514"
                 source_subnetwork_ip_ranges_to_nat: "ALL_SUBNETWORKS_ALL_IP_RANGES"
                 log_config_enable: true
@@ -224,13 +219,13 @@ Environments:
             billing_account: *billing_account
             domain: *domain
             prefix: "peering-"
-            network_name: "cloudon-mgmt-dev-vpc"
+            network_name: "cloudon-shrd-dev-vpc"
 
         net-firewalls:
           inputs:
             firewalls:
               fw-allow-proxy:
-                network_name: "cloudon-mgmt-dev-vpc"
+                network_name: "cloudon-shrd-dev-vpc"
                 allow:
                   - protocol: "tcp"
                     ports:
@@ -260,7 +255,7 @@ Environments:
             type: "public"
             domain: "dev.gcp.cloudon.one"
             recordsets:
-              - name: "dev-sql.dev.gcp.cloudon.one" #example
+              - name: "dev-sql.dev.gcp.cloudon.one"
                 type: "A"
                 ttl: 300
                 records: [""]
@@ -272,12 +267,12 @@ Environments:
           inputs:
             billing_account: *billing_account
             domain: *domain
-            service_project_name: "cloudon-mgmt-dev-svc"
+            service_project_name: "cloudon-shrd-dev-svc"
             service_projects:
               service:
                 lien: false
                 service_accounts:
-                  - "tf-mgmt-dev"
+                  - "tf-shrd-dev"
                 active_apis:
                   - "compute.googleapis.com"
                   - "logging.googleapis.com"
@@ -300,7 +295,7 @@ Environments:
               ci-runner:
                 k8s_sa_name: ci-runner
                 namespace: ci-runner
-                #  project: *mgmt-dev-svc-project
+                #  project: *shrd-dev-svc-project
                 roles:
                   - "roles/container.developer"
                   - "roles/storage.objectCreator"
@@ -313,7 +308,7 @@ Environments:
 
         svc-gke:
           inputs:
-            name: "cloudon-mgmt-dev-cluster"
+            name: "cloudon-shrd-dev-cluster"
             master_ipv4_cidr_block: "10.151.160.0/28"
             ip_range_pods: "pods"
             ip_range_services: "services"
@@ -330,7 +325,7 @@ Environments:
             release_channel: "REGULAR"
             master_authorized_networks:
               - cidr_block: "10.151.0.0/16"
-                display_name: "Mgmt dev vpc cidr"
+                display_name: "shrd dev vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -395,14 +390,14 @@ Environments:
             datadog_api_key: ""
             datadog_app_key: ""
     prod:
-      Region: &mgmt-prod-region "us-east1"
-      Resources:
+      region: &shrd-prod-region "us-east1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
             domain: *domain
-            host_project_name: "cloudon-mgmt-prod-host"
-            network_name: "cloudon-mgmt-prod-vpc"
+            host_project_name: "cloudon-shrd-prod-host"
+            network_name: "cloudon-shrd-prod-vpc"
             active_apis:
               - "compute.googleapis.com"
               - "logging.googleapis.com"
@@ -415,13 +410,13 @@ Environments:
             subnets:
               - subnet_name: "gke-subnet"
                 subnet_ip: "10.152.128.0/20"
-                subnet_region: *mgmt-prod-region
+                subnet_region: *shrd-prod-region
                 subnet_private_access: true
                 subnet_flow_logs: true
 
               - subnet_name: "general-subnet"
                 subnet_ip: "10.152.161.0/24"
-                subnet_region: *mgmt-prod-region
+                subnet_region: *shrd-prod-region
                 subnet_private_access: true
                 subnet_flow_logs: true
 
@@ -434,7 +429,7 @@ Environments:
 
             cloud_nats:
               us-east1:
-                router_name: "cloudon-mgmt-prod-router"
+                router_name: "cloudon-shrd-prod-router"
                 router_asn: "64514"
                 source_subnetwork_ip_ranges_to_nat: "ALL_SUBNETWORKS_ALL_IP_RANGES"
                 log_config_enable: true
@@ -451,7 +446,7 @@ Environments:
           inputs:
             firewalls:
               fw-allow-proxy:
-                network_name: "cloudon-mgmt-prod-vpc"
+                network_name: "cloudon-shrd-prod-vpc"
                 allow:
                   - protocol: "tcp"
                     ports:
@@ -493,13 +488,13 @@ Environments:
 
         net-vpn:
           inputs:
-            network: "cloudon-vpc-mgmt-prod"
-            gateway_name: "cloudon-west1-classic-vpn-gw"
+            network: "cloudon-vpc-shrd-prod"
+            gateway_name: "cloudon-classic-vpn-gw"
             peer_ips:
               - "" # client vpn gw IP
             remote_subnet:
-              - "192.168.2.0/23" # to be changed
-              - "192.168.30.0/24"
+              - "192.168.1.0/24" 
+              - "192.168.2.0/24"
             route_priority: 99
             tunnel_count: 1
             vpn_gw_ip: ""
@@ -512,18 +507,18 @@ Environments:
             billing_account: *billing_account
             domain: *domain
             prefix: "peering-"
-            network_name: "cloudon-vpc-mgmt-prod"
+            network_name: "cloudon-vpc-shrd-prod"
 
         svc-projects:
           inputs:
             billing_account: *billing_account
             domain: *domain
-            service_project_name: "cloudon-mgmt-prod-svc"
+            service_project_name: "cloudon-shrd-prod-svc"
             service_projects:
               service:
                 lien: false
                 service_accounts:
-                  - "tf-mgmt-prod"
+                  - "tf-shrd-prod"
                 active_apis:
                   - "container.googleapis.com"
                   - "compute.googleapis.com"
@@ -539,10 +534,10 @@ Environments:
                 credentials_path: ""
             kms_rings:
               service:
-                keyring: "cloudon-mgmt-svc-prod-vault-ring"
+                keyring: "cloudon-shrd-svc-prod-vault-ring"
                 location: "us-east1"
                 keys:
-                  - "cloudon-mgmt-svc-prod-vault-key"
+                  - "cloudon-shrd-svc-prod-vault-key"
                 set_owners_for: []
                 owners: []
 
@@ -552,18 +547,18 @@ Environments:
               #vault-sa:
               #  k8s_sa_name: vault
               #  namespace: vault
-              #  project: *mgmt-prod-svc-project
+              #  project: *shrd-prod-svc-project
               #  roles:
               #    - roles/cloudkms.cryptoKeyEncrypterDecrypter
               #consul-sa:
               #  k8s_sa_name: consul
               #  namespace: consul
-              #  project: *mgmt-prod-svc-project
+              #  project: *shrd-prod-svc-project
               #  roles: []
               ci-runner:
                 k8s_sa_name: ci-runner
                 namespace: ci-runner
-                # project: *mgmt-dev-svc-project
+                # project: *shrd-dev-svc-project
                 roles:
                   - "roles/container.developer"
                   - "roles/storage.objectAdmin"
@@ -573,7 +568,7 @@ Environments:
 
         svc-gke:
           inputs:
-            name: "cloudon-mgmt-prod-cluster"
+            name: "cloudon-shrd-prod-cluster"
             master_ipv4_cidr_block: "10.152.160.0/28"
             ip_range_pods: "pods"
             ip_range_services: "services"
@@ -591,7 +586,7 @@ Environments:
             release_channel: "REGULAR"
             master_authorized_networks:
               - cidr_block: "10.152.0.0/16"
-                display_name: "Mgmt vpc cidr"
+                display_name: "shrd vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -616,17 +611,17 @@ Environments:
                 auto_upgrade: true
                 preemptible: false
                 initial_node_count: 1
-              #- name: "consul-vault-pool"
-              #  machine_type: "n2-standard-2"
-              #  min_count: 1
-              #  max_count: 1
-              #  disk_size_gb: 100
-              #  disk_type: "pd-ssd"
-              #  image_type: "COS"
-              #  auto_repair: true
-              #  auto_upgrade: true
-              #  preemptible: false
-              #  initial_node_count: 1
+              - name: "consul-vault-pool"
+                machine_type: "n2-standard-2"
+                min_count: 1
+                max_count: 1
+                disk_size_gb: 100
+                disk_type: "pd-ssd"
+                image_type: "COS"
+                auto_repair: true
+                auto_upgrade: true
+                preemptible: false
+                initial_node_count: 1
 
             node_pools_oauth_scopes:
               all: []
@@ -677,8 +672,8 @@ Environments:
 
   dev:
     eu:
-      Region: &eu-dev-region "europe-west1"
-      Resources:
+      region: &eu-dev-region "europe-west1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
@@ -714,7 +709,7 @@ Environments:
                 subnet_region: *eu-dev-region
                 subnet_private_access: false
                 subnet_flow_logs: false
-                purpose: "INTERNAL_HTTPS_LOAD_BALANCER"
+                purpose: "INTErNAL_HTTPS_LOAD_BALANCEr"
                 role: "ACTIVE"
 
             secondary_ranges:
@@ -810,12 +805,12 @@ Environments:
             create_service_account: true
             enable_network_egress_export: false
             enable_resource_consumption_export: true
-            release_channel: "REGULAR"
+            release_channel: "rEGULAr"
             master_authorized_networks:
               - cidr_block: "10.153.0.0/16"
                 display_name: "dev vpc cidr"
               - cidr_block: "10.151.0.0/16"
-                display_name: "mgmt dev vpc cidr"
+                display_name: "shrd dev vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -899,7 +894,7 @@ Environments:
           inputs:
             name: "cloudon-dev-eu-sql"
             random_instance_name: true
-            database_version: "POSTGRES_11"
+            database_version: "POSTGrES_11"
             deletion_protection: false
             availability_type: "REGIONAL"
             zone: "europe-west1-b"
@@ -935,13 +930,13 @@ Environments:
             location_id: "europe-west1-b"
             address: "10.153.165.0"
             memory_size_gb: "1"
-            redis_version: "REDIS_5_0"
-            connect_mode: "PRIVATE_SERVICE_ACCESS"
+            redis_version: "rEDIS_5_0"
+            connect_mode: "PrIVATE_SErVICE_ACCESS"
 
   stg:
     eu:
-      Region: &eu-stg-region "europe-west1"
-      Resources:
+      region: &eu-stg-region "europe-west1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
@@ -1043,12 +1038,12 @@ Environments:
             create_service_account: true
             enable_network_egress_export: false
             enable_resource_consumption_export: true
-            release_channel: "REGULAR"
+            release_channel: "rEGULAr"
             master_authorized_networks:
               - cidr_block: "10.154.0.0/16"
                 display_name: "stg vpc cidr"
               - cidr_block: "10.151.0.0/16"
-                display_name: "mgmt dev vpc cidr"
+                display_name: "shrd dev vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -1124,7 +1119,7 @@ Environments:
           inputs:
             name: "cloudon-stg-eu-sql"
             random_instance_name: true
-            database_version: "POSTGRES_11"
+            database_version: "POSTGrES_11"
             deletion_protection: false
             availability_type: "REGIONAL"
             zone: "europe-west1-b"
@@ -1160,11 +1155,11 @@ Environments:
             location_id: "europe-west1-b"
             address: "10.154.165.0"
             memory_size_gb: "1"
-            redis_version: "REDIS_5_0"
-            connect_mode: "PRIVATE_SERVICE_ACCESS"
-    us:
-      Region: &us-stg-region "us-east1"
-      Resources:
+            redis_version: "rEDIS_5_0"
+            connect_mode: "PrIVATE_SErVICE_ACCESS"
+   
+      region: &us-stg-region "us-east1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
@@ -1272,12 +1267,12 @@ Environments:
             create_service_account: true
             enable_network_egress_export: false
             enable_resource_consumption_export: true
-            release_channel: "REGULAR"
+            release_channel: "rEGULAr"
             master_authorized_networks:
               - cidr_block: "10.157.0.0/16"
                 display_name: "stg vpc cidr"
               - cidr_block: "10.151.0.0/16"
-                display_name: "mgmt dev vpc cidr"
+                display_name: "shrd dev vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -1353,7 +1348,7 @@ Environments:
           inputs:
             name: "cloudon-stg-us-sql"
             random_instance_name: true
-            database_version: "POSTGRES_11"
+            database_version: "POSTGrES_11"
             deletion_protection: false
             availability_type: "REGIONAL"
             zone: "us-east1-b"
@@ -1389,13 +1384,13 @@ Environments:
             location_id: "us-east1-b"
             address: "10.157.165.0"
             memory_size_gb: "1"
-            redis_version: "REDIS_5_0"
-            connect_mode: "PRIVATE_SERVICE_ACCESS"
+            redis_version: "rEDIS_5_0"
+            connect_mode: "PrIVATE_SErVICE_ACCESS"
 
   prod:
     us:
-      Region: &us-prod-region "us-east1"
-      Resources:
+      region: &us-prod-region "us-east1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
@@ -1430,7 +1425,7 @@ Environments:
                 subnet_region: *us-prod-region
                 subnet_private_access: false
                 subnet_flow_logs: false
-                purpose: "INTERNAL_HTTPS_LOAD_BALANCER"
+                purpose: "INTErNAL_HTTPS_LOAD_BALANCEr"
                 role: "ACTIVE"
 
             secondary_ranges:
@@ -1543,12 +1538,12 @@ Environments:
             enable_network_egress_expoert: false
             enable_resource_consumption_export: true
             modify_gke_peer: true
-            release_channel: "REGULAR"
+            release_channel: "rEGULAr"
             master_authorized_networks:
               - cidr_block: "10.156.0.0/16"
                 display_name: "Prod vpc cidr"
               - cidr_block: "10.152.0.0/16"
-                display_name: "mgmt prod vpc cidr"
+                display_name: "shrd prod vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -1611,7 +1606,7 @@ Environments:
           inputs:
             name: "cloudon-prod-us-sql"
             random_instance_name: true
-            database_version: "POSTGRES_12"
+            database_version: "POSTGrES_12"
             deletion_protection: true
             availability_type: "REGIONAL"
             zone: "us-east1-a"
@@ -1647,11 +1642,11 @@ Environments:
             location_id: "us-east1-b"
             address: "10.156.165.0"
             memory_size_gb: "1"
-            redis_version: "REDIS_5_0"
-            connect_mode: "PRIVATE_SERVICE_ACCESS"
+            redis_version: "rEDIS_5_0"
+            connect_mode: "PrIVATE_SErVICE_ACCESS"
     eu:
-      Region: &eu-prod-region "europe-west1"
-      Resources:
+      region: &eu-prod-region "europe-west1"
+      resources:
         net-vpc:
           inputs:
             billing_account: *billing_account
@@ -1686,7 +1681,7 @@ Environments:
                 subnet_region: *eu-prod-region
                 subnet_private_access: false
                 subnet_flow_logs: false
-                purpose: "INTERNAL_HTTPS_LOAD_BALANCER"
+                purpose: "INTErNAL_HTTPS_LOAD_BALANCEr"
                 role: "ACTIVE"
 
             secondary_ranges:
@@ -1794,12 +1789,12 @@ Environments:
             enable_network_egress_expoert: false
             enable_resource_consumption_export: true
             modify_gke_peer: true
-            release_channel: "REGULAR"
+            release_channel: "rEGULAr"
             master_authorized_networks:
               - cidr_block: "10.155.0.0/16"
                 display_name: "prod-eu vpc cidr"
               - cidr_block: "10.152.0.0/16"
-                display_name: "mgmt-prod vpc cidr"
+                display_name: "shrd-prod vpc cidr"
 
             node_pools:
               - name: "service-node-pool"
@@ -1862,7 +1857,7 @@ Environments:
           inputs:
             name: "cloudon-prod-eu-sql"
             random_instance_name: true
-            database_version: "POSTGRES_12"
+            database_version: "POSTGrES_12"
             deletion_protection: true
             availability_type: "REGIONAL"
             zone: "europe-west1-a"
@@ -1898,5 +1893,5 @@ Environments:
             location_id: "europe-west1-b"
             address: "10.155.165.0"
             memory_size_gb: "1"
-            redis_version: "REDIS_5_0"
-            connect_mode: "PRIVATE_SERVICE_ACCESS"
+            redis_version: "rEDIS_5_0"
+            connect_mode: "PrIVATE_SErVICE_ACCESS"

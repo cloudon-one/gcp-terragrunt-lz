@@ -1,3 +1,3 @@
 dependency "admin" {
-  config_path = "Environments/global/admin"
+  config_path = "envs/global/admin"
 }
