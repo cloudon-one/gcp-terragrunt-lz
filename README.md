@@ -23,14 +23,14 @@ Authenticate with google sdk
 gcloud auth application-default login
 ```
 ```
-cd Environments/global/admin
+cd envs/global/admin
 terragrunt init
 terragrunt apply
 ```
 Uncomment `remote_state` block within `global/terragrunt.hcl`
 Init admin folder with remote state
 ```
-cd Environments/global/admin
+cd envs/global/admin
 terragrunt init
 ```
 Type YES to confirm

@@ -20,17 +20,17 @@ locals {
   resource_vars = local.common_vars["envs"]["${local.environment}"]["resources"]["${local.resource}"]
 }
 
-remote_state {
-  backend = "gcs"
-  config = {
-    bucket               = "${local.common_vars.common.labels.owner}-admin-${local.common_vars.common.suffix}"
-    prefix               = "envs/global/${path_relative_to_include()}"
-    skip_bucket_creation = true
-  }
-  generate = {
-    path      = "backend.tf"
-    if_exists = "overwrite"
-  }
-}
+#remote_state {
+#  backend = "gcs"
+#  config = {
+#    bucket               = "${local.common_vars.common.labels.owner}-admin-${local.common_vars.common.suffix}"
+#    prefix               = "envs/global/${path_relative_to_include()}"
+#    skip_bucket_creation = true
+#  }
+#  generate = {
+#    path      = "backend.tf"
+#    if_exists = "overwrite"
+#  }
+#}
 
 skip = true
