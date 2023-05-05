@@ -2,35 +2,33 @@
 
 ## Dependencies
 
-- gcloud sdk
-- terraform 1.3+
-- terragrunt 0.35+
+- [GCP SDK](https://cloud.google.com/sdk/docs/install)
+- [Terraform 1.3+](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform)
+- [Terragrunt 0.35+](https://terragrunt.gruntwork.io/docs/getting-started/install/)
 
-## Required permissions
--   Billing Account User
--   Organization Viewer
--   Folder Admin
--   Compute Storage Admin
--   Project Creator
--   Project IAM Admin
--   Folder Admin
--   Compute Shared VPC Admin
+## Required GCP Permissions to Deploy Landing Zone
+
+- Billing Account User
+- Organization Viewer
+- Folder Admin
+- Compute Storage Admin
+- Project Creator
+- Project IAM Admin
+- Folder Admin
+- XPN Admin
 
 ## Start
 
-Authenticate with google sdk
-```
-gcloud auth application-default login
-```
-```
-cd envs/global/admin
-terragrunt init
-terragrunt apply
-```
+Authenticate with GCP SDK
+
+    gcloud auth application-default login
+    cd envs/global/admin
+    terragrunt init
+    terragrunt apply
 Uncomment `remote_state` block within `global/terragrunt.hcl`
 Init admin folder with remote state
-```
-cd envs/global/admin
-terragrunt init
-```
-Type YES to confirm
+
+    cd envs/global/admin
+    terragrunt init
+
+Type `YES` to confirm
