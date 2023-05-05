@@ -1,5 +1,5 @@
 common:
-  billing_account: &billing_account "01CA00-A50074-212B1C" # cloudon
+  billing_account: &billing_account ""
   domain: &domain "cloudon.one"
   org_id: "1234567890"
   root_folder: "1234567890"
