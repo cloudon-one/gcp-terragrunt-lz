@@ -1,9 +1,9 @@
-# AVO GCP
+# Terragrunt and yaml based GCP Infra
 
 ## Dependencies
 
 - gcloud sdk
-- terraform 1.0+
+- terraform 1.3+
 - terragrunt 0.35+
 
 ## Required permissions
