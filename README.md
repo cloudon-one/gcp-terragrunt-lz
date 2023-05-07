@@ -25,10 +25,4 @@ Authenticate with GCP SDK
     cd envs/global/admin
     terragrunt init
     terragrunt apply
-Uncomment `remote_state` block within `global/terragrunt.hcl`
-Init admin folder with remote state
 
-    cd envs/global/admin
-    terragrunt init
-
-Type `YES` to confirm
