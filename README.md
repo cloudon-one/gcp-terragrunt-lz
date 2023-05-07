@@ -1,5 +1,5 @@
 # Terragrunt and yaml based GCP Infra
-
+![enter image description here](https://github.com/cloudon-one/gcp-terragrunt-lz/blob/main/hld.jpeg)
 ## Dependencies
 
 - [GCP SDK](https://cloud.google.com/sdk/docs/install)
