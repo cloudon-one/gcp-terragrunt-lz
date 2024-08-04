@@ -20,7 +20,7 @@ locals {
 module "service_project" {
   for_each                    = var.service_projects
   source                      = "terraform-google-modules/project-factory/google"
-  version                     = "14.2.0"
+  version                     = "15.0.1"
   name                        = var.service_project_name
   random_project_id           = true
   org_id                      = data.google_organization.org.org_id
@@ -37,7 +37,7 @@ module "service_project" {
 module "active_apis" {
   for_each      = var.service_projects
   source        = "terraform-google-modules/project-factory/google//modules/project_services"
-  version       = "14.2.0"
+  version       = "15.0.1"
   activate_apis = var.service_projects[each.key].active_apis
   project_id    = module.service_project[each.key].project_id
   depends_on    = [module.service_project]
@@ -46,7 +46,7 @@ module "active_apis" {
 module "vpc" {
   for_each                               = var.vpcs
   source                                 = "terraform-google-modules/network/google"
-  version                                = "7.0.0"
+  version                                = "9.1.0"
   project_id                             = module.service_project[each.key].project_id
   network_name                           = var.vpcs[each.key].network_name
   delete_default_internet_gateway_routes = false
@@ -69,7 +69,7 @@ resource "google_service_account" "service_accounts" {
 module "kms_rings" {
   for_each = var.kms_rings
   source   = "terraform-google-modules/kms/google"
-  version  = "2.2.2"
+  version  = "2.3.0"
 
   project_id     = module.service_project[each.key].project_id
   location       = var.kms_rings[each.key].location

@@ -1,6 +1,6 @@
 module "dns" {
   source                       = "terraform-google-modules/cloud-dns/google"
-  version                      = "5.0.0"
+  version                      = "5.2.0"
   project_id                   = var.project_id
   type                         = var.type
   name                         = var.name

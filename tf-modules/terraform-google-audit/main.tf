@@ -16,7 +16,7 @@ resource "google_folder" "audit_folder" {
 
 module "audit_project" {
   source                     = "terraform-google-modules/project-factory/google"
-  version                    = "14.2.0"
+  version                    = "15.0.1"
   name                       = var.audit_project_name
   project_id                 = var.audit_project_id
   random_project_id          = var.audit_random_project_id
@@ -35,7 +35,7 @@ module "audit_project" {
 
 module "log_export" {
   source                 = "terraform-google-modules/log-export/google"
-  version                = "7.5.0"
+  version                = "8.1.0"
   destination_uri        = module.destination.destination_uri
   filter                 = "logName:\"logs/cloudaudit.googleapis.com\""
   log_sink_name          = var.log_sink_name

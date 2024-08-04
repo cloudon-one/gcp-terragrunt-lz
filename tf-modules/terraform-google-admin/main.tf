@@ -16,7 +16,7 @@ resource "google_folder" "admin_folder" {
 
 module "admin_project" {
   source                     = "terraform-google-modules/project-factory/google"
-  version                    = "14.2.0"
+  version                    = "15.0.1"
   name                       = var.admin_project_name
   project_id                 = var.admin_project_id
   random_project_id          = var.admin_random_project_id

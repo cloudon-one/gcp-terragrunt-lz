@@ -25,7 +25,7 @@ resource "null_resource" "dependency_setter" {
 
 module "pg" {
   source                           = "GoogleCloudPlatform/sql-db/google//modules/postgresql"
-  version                          = "15.0.0"
+  version                          = "21.0.0"
   project_id                       = var.project_id
   name                             = var.name
   random_instance_name             = var.random_instance_name

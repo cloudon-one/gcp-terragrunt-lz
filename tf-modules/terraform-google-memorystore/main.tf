@@ -23,7 +23,7 @@ resource "null_resource" "dependency_setter" {
 }
 module "memorystore" {
   source  = "terraform-google-modules/memorystore/google"
-  version = "7.1.0"
+  version = "10.0.0"
 
   name                    = var.name
   project                 = var.project_id

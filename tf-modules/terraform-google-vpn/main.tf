@@ -24,7 +24,7 @@ resource "google_compute_router" "this" {
 
 module "vpn" {
   source  = "terraform-google-modules/vpn/google"
-  version = "2.3.1"
+  version = "4.0.0"
 
   project_id         = var.project_id
   network            = var.network

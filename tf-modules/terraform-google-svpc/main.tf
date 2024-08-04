@@ -4,7 +4,7 @@ data "google_organization" "org" {
 
 module "host_project" {
   source                     = "terraform-google-modules/project-factory/google"
-  version                    = "14.2.0"
+  version                    = "15.0.1"
   name                       = var.host_project_name
   random_project_id          = true
   org_id                     = data.google_organization.org.org_id
@@ -18,7 +18,7 @@ module "host_project" {
 
 module "vpc" {
   source                                 = "terraform-google-modules/network/google"
-  version                                = "7.0.0"
+  version                                = "9.1.0"
   project_id                             = module.host_project.project_id
   network_name                           = var.network_name
   delete_default_internet_gateway_routes = false
@@ -29,7 +29,7 @@ module "vpc" {
 
 module "subnets_beta" {
   source       = "terraform-google-modules/network/google//modules/subnets-beta"
-  version      = "4.0.0"
+  version      = "9.1.0"
   project_id   = module.host_project.project_id
   network_name = var.network_name
   subnets      = var.subnets_beta
@@ -38,7 +38,7 @@ module "subnets_beta" {
 module "cloud-nat" {
   for_each                           = toset(keys(var.cloud_nats))
   source                             = "terraform-google-modules/cloud-nat/google"
-  version                            = "3.0.0"
+  version                            = "5.2.0"
   project_id                         = module.vpc.project_id
   region                             = each.key
   create_router                      = true

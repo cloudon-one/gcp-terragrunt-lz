@@ -1,6 +1,6 @@
 module "peering-a-b" {
   source                                    = "terraform-google-modules/network/google//modules/network-peering"
-  version                                   = "7.0.0"
+  version                                   = "9.1.0"
   prefix                                    = var.prefix
   local_network                             = var.local_network
   peer_network                              = var.peer_network

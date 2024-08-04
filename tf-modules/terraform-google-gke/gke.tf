@@ -1,6 +1,6 @@
 module "gke" {
   source                             = "terraform-google-modules/kubernetes-engine/google//modules/beta-private-cluster-update-variant"
-  version                            = "= 25.0.0"
+  version                            = "31.1.0"
   project_id                         = var.project_id
   name                               = var.name
   description                        = var.description
@@ -45,12 +45,9 @@ module "gke" {
   logging_service                    = var.logging_service
   monitoring_service                 = var.monitoring_service
   grant_registry_access              = var.grant_registry_access
-  basic_auth_username                = var.basic_auth_username
-  basic_auth_password                = var.basic_auth_password
   issue_client_certificate           = var.issue_client_certificate
   cluster_ipv4_cidr                  = var.cluster_ipv4_cidr
   cluster_resource_labels            = var.cluster_resource_labels
-  skip_provisioners                  = var.skip_provisioners
   deploy_using_private_endpoint      = var.deploy_using_private_endpoint
   master_global_access_enabled       = var.master_global_access_enabled
   http_load_balancing                = var.http_load_balancing
@@ -72,7 +69,6 @@ module "gke" {
   add_cluster_firewall_rules         = var.add_cluster_firewall_rules
   firewall_priority                  = var.firewall_priority
   firewall_inbound_ports             = var.firewall_inbound_ports
-  gcloud_upgrade                     = var.gcloud_upgrade
   disable_default_snat               = var.disable_default_snat
   node_pools                         = var.node_pools
   node_pools_labels                  = var.node_pools_labels

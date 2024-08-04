@@ -1,6 +1,6 @@
 module "gke-k8s-iam" {
   source   = "terraform-google-modules/iam/google//modules/projects_iam"
-  version  = "= 7.6.0"
+  version  = "= 7.7.1"
   mode     = "additive"
   projects = [var.network_project_id]
   bindings = {

@@ -6,7 +6,7 @@ data "google_organization" "org" {
 module "organization_iam" {
   for_each      = toset(keys(var.organizations_iam))
   source        = "terraform-google-modules/iam/google//modules/organizations_iam"
-  version       = "7.6.0"
+  version       = "7.7.1"
   organizations = [data.google_organization.org[each.key].org_id]
   mode          = "additive"
   bindings      = var.organizations_iam[each.key].bindings
@@ -15,7 +15,7 @@ module "organization_iam" {
 module "folder_iam" {
   for_each = toset(keys(var.folders_iam))
   source   = "terraform-google-modules/iam/google//modules/folders_iam"
-  version  = "7.6.0"
+  version  = "7.7.1"
   folders  = [each.key]
   mode     = "additive"
   bindings = var.folders_iam[each.key].bindings
@@ -24,7 +24,7 @@ module "folder_iam" {
 module "project_iam" {
   for_each = toset(keys(var.projects_iam))
   source   = "terraform-google-modules/iam/google//modules/projects_iam"
-  version  = "7.6.0"
+  version  = "7.7.1"
   projects = [each.key]
   mode     = "additive"
   bindings = var.projects_iam[each.key].bindings
@@ -33,7 +33,7 @@ module "project_iam" {
 module "subnet_iam" {
   for_each = toset(keys(var.subnets_iam))
   source   = "terraform-google-modules/iam/google//modules/subnets_iam"
-  version  = "7.6.0"
+  version  = "7.7.1"
   subnets  = [each.key]
   subnets_region = element(
     split("/", each.key),
@@ -50,7 +50,7 @@ module "subnet_iam" {
 module "storage_buckets_iam" {
   for_each        = toset(keys(var.storage_buckets_iam))
   source          = "terraform-google-modules/iam/google//modules/storage_buckets_iam"
-  version         = "7.6.0"
+  version         = "7.7.1"
   storage_buckets = [each.key]
   mode            = "additive"
   bindings        = var.storage_buckets_iam[each.key].bindings
@@ -59,7 +59,7 @@ module "storage_buckets_iam" {
 module "service_account_iam" {
   for_each         = toset(keys(var.service_accounts_iam))
   source           = "terraform-google-modules/iam/google//modules/service_accounts_iam"
-  version          = "7.6.0"
+  version          = "7.7.1"
   service_accounts = [each.value]
   project          = var.service_accounts_iam[each.key].project
   mode             = "additive"
