@@ -3,8 +3,8 @@
 ## Dependencies
 
 - [GCP SDK](https://cloud.google.com/sdk/docs/install)
-- [Terraform 1.3+](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform)
-- [Terragrunt 0.35+](https://terragrunt.gruntwork.io/docs/getting-started/install/)
+- [Terraform 1.5+](https://developer.hashicorp.com/terraform/downloads?product_intent=terraform)
+- [Terragrunt 0.4+](https://terragrunt.gruntwork.io/docs/getting-started/install/)
 
 ## Required GCP Permissions to Deploy Landing Zone
 
